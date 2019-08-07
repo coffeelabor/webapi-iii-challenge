@@ -1,15 +1,49 @@
-const express = 'express';
+const express = require("express");
+const helmet = require("helmet");
+
+const userRouter = require("./users/userRouter.js");
+const postRouter = require("./posts/postRouter.js");
 
 const server = express();
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`)
+//custom middleware
+//logger()
+function logger(req, res, next) {
+  console.log(
+    `${req.method} request to ${req.url} at ${new Date().toISOString()}`
+  );
+  next();
+}
+
+// module.exports = server;
+
+server.use(express.json());
+server.use(helmet());
+server.use(logger);
+
+server.use("/posts", postRouter);
+server.use("/users", userRouter);
+
+server.get("/", logger, (req, res) => {
+  // res.send(`<h2>Let's write some middleware!</h2>`);
+  const queryParameters = req.query;
+  res.status(200).json({ message: "Howdy", queryParameters });
 });
 
-//custom middleware
+server.listen(8000, () => console.log("\n Lok'tar \n"));
 
-function logger(req, res, next) {
+// const express = 'express';
 
-};
+// const server = express();
 
-module.exports = server;
+// server.get('/', (req, res) => {
+//   res.send(`<h2>Let's write some middleware!</h2>`)
+// });
+
+// //custom middleware
+
+// function logger(req, res, next) {
+
+// };
+
+// module.exports = server;
