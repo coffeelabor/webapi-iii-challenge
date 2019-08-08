@@ -26,7 +26,18 @@ router.get("/:id", validatePostId, (req, res) => {
   res.status(200).json(req.post);
 });
 
-router.delete("/:id", (req, res) => {});
+router.delete("/:id", validatePostId, (req, res) => {
+  postDb
+    .remove(req.params.id)
+    .then(post => {
+      res.status(200).json({ message: "Post is gone, forever!!" });
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "Internal server error, failed to delete" });
+    });
+});
 
 router.put("/:id", (req, res) => {});
 
