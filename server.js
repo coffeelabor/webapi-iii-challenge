@@ -7,6 +7,7 @@ server.use(express.json());
 server.use(logger);
 // server.use("api/users", userRouter);
 server.use("/api/users", router);
+server.use("/api/posts", router);
 // const userRouter = require("./users/userRouter.js");
 
 server.get("/", (req, res) => {
