@@ -2,6 +2,7 @@
 const router = require("express").Router();
 
 const posts = require("../data/seeds/03-posts.js");
+const data = require("../posts/postDb");
 
 router.get("/", (req, res) => {
   posts

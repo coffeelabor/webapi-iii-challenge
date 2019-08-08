@@ -1,13 +1,20 @@
 const express = require("express");
-const helmet = require("helmet");
-
-const userRouter = require("./users/userRouter.js");
-const postRouter = require("./posts/postRouter.js");
+const router = require("./users/userRouter.js");
 
 const server = express();
 
+server.use(express.json());
+server.use(logger);
+// server.use("api/users", userRouter);
+server.use("/api/users", router);
+// const userRouter = require("./users/userRouter.js");
+
+server.get("/", (req, res) => {
+  res.send(`<h2>Let's write some middleware!</h2>`);
+});
+
 //custom middleware
-//logger()
+
 function logger(req, res, next) {
   console.log(
     `${req.method} request to ${req.url} at ${new Date().toISOString()}`
@@ -15,22 +22,40 @@ function logger(req, res, next) {
   next();
 }
 
+module.exports = server;
+
+// const express = require("express");
+// const helmet = require("helmet");
+
+// const userRouter = require("./users/userRouter.js");
+// // const postRouter = require("./posts/postRouter.js");
+
+// const server = express();
+
+// //custom middleware
+// //logger()
+// function logger(req, res, next) {
+//   console.log(
+//     `${req.method} request to ${req.url} at ${new Date().toISOString()}`
+//   );
+//   next();
+// }
+
+// server.use(express.json());
+// server.use(helmet());
+// server.use(logger);
+
+// // server.use("/posts", postRouter);
+// server.use("/users", userRouter);
+
+// server.get("/", logger, (req, res) => {
+//   // res.send(`<h2>Let's write some middleware!</h2>`);
+//   const queryParameters = req.query;
+//   res.status(200).json({ message: "Howdy", queryParameters });
+// });
+
 // module.exports = server;
-
-server.use(express.json());
-server.use(helmet());
-server.use(logger);
-
-server.use("/posts", postRouter);
-server.use("/users", userRouter);
-
-server.get("/", logger, (req, res) => {
-  // res.send(`<h2>Let's write some middleware!</h2>`);
-  const queryParameters = req.query;
-  res.status(200).json({ message: "Howdy", queryParameters });
-});
-
-server.listen(8000, () => console.log("\n Lok'tar \n"));
+// server.listen(8000, () => console.log("\n Lok'tar \n"));
 
 // const express = 'express';
 
